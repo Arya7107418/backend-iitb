@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  backend:
+    image: anjali996/my-backend-app:latest
+    container_name: backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=course_api.settings
+      - DEBUG=0
+    volumes:
+      - ./backend:/app
+    command: gunicorn --bind 0.0.0.0:8000 course_api.wsgi:application
+  frontend:
+    image: anjali996/my-frontend-app:latest
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://backend:8000
+    volumes:
+      - ./frontend:/app
+    command: npm start
+networks:
+  default:
+    name: my_custom_networkgi
